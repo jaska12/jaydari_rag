@@ -4,6 +4,8 @@ import logging
 
 from app.api.routes import router
 from app.core.config import Settings
+from app.services.embeddings_service import EmbeddingService
+from app.services.qdrant_service import QdrantService
 
 logger = logging.getLogger("uvicorn")
 logger.info("*** JAYDARI RAG STARTS ***")
@@ -12,6 +14,15 @@ logger.info("*** JAYDARI RAG STARTS ***")
 async def lifespan(app: FastAPI):
     settings = Settings()
     app.state.settings = settings
+
+    logging.basicConfig(
+        level=settings.log_level,
+        format='%(asctime)s %(levelname)s %(name)s %(message)s'
+    )
+
+    embeddings = EmbeddingService(settings.embedding_model)
+    qdrant = QdrantService(settings, embeddings)
+
     yield
 
 
