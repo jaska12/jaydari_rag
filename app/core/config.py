@@ -20,6 +20,8 @@ class Settings(BaseSettings):
 
     llm_model: str = 'TinyLlama/TinyLlama-1.1B-Chat-v1.0'
     llm_device: str = 'cpu'
+    llm_max_new_tokens: int = 512
+    llm_adapter_path: str | None = None
 
     rag_enabled: bool = True
     top_k: int = 5
